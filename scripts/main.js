@@ -49,16 +49,16 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
 
   navigator.serviceWorker.register('sw.js')
-  .then(function(swReg) {
-    console.log('Service Worker is registered', swReg);
+    .then(function (swReg) {
+      console.log('Service Worker is registered', swReg);
 
-    swRegistration = swReg;    
-    initializeUI();
+      swRegistration = swReg;
+      initializeUI();
 
-  }).catch(function(error) {
+    }).catch(function (error) {
 
-    console.error('Service Worker Error', error);
-  });
+      console.error('Service Worker Error', error);
+    });
 
 } else {
 
@@ -69,28 +69,28 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
 function unsubscribeUser() {
   swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    if (subscription) {
-      return subscription.unsubscribe();
-    }
-  })
-  .catch(function(error) {
-    console.log('Error unsubscribing', error);
-  })
-  .then(function() {
-    updateSubscriptionOnServer(null);
-    console
+    .then(function (subscription) {
+      if (subscription) {
+        return subscription.unsubscribe();
+      }
+    })
+    .catch(function (error) {
+      console.log('Error unsubscribing', error);
+    })
+    .then(function () {
+      updateSubscriptionOnServer(null);
+      console
 
-.log('User is unsubscribed.');
-    isSubscribed = false;
-    updateBtn
+        .log('User is unsubscribed.');
+      isSubscribed = false;
+      updateBtn
 
-();
-  });
+        ();
+    });
 }
 
 function initializeUI() {
-  pushButton.addEventListener('click', function() {
+  pushButton.addEventListener('click', function () {
     pushButton.disabled = true;
     if (isSubscribed) {
       unsubscribeUser();
@@ -101,19 +101,19 @@ function initializeUI() {
 
   // Set the initial subscription value
   swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    isSubscribed = !(subscription === null);
+    .then(function (subscription) {
+      isSubscribed = !(subscription === null);
 
-    updateSubscriptionOnServer(subscription);
+      updateSubscriptionOnServer(subscription);
 
-    if (isSubscribed) {
-      console.log('User IS subscribed.');
-    } else {
-      console.log('User is NOT subscribed.');
-    }
+      if (isSubscribed) {
+        console.log('User IS subscribed.');
+      } else {
+        console.log('User is NOT subscribed.');
+      }
 
-    updateBtn();
-  });
+      updateBtn();
+    });
 }
 
 function updateBtn() {
@@ -131,18 +131,18 @@ function subscribeUser() {
     userVisibleOnly: true,
     applicationServerKey: applicationServerKey
   })
-  .then(function(subscription) {
-    console.log('User is subscribed.');
+    .then(function (subscription) {
+      console.log('User is subscribed.');
 
-    updateSubscriptionOnServer(subscription);
+      updateSubscriptionOnServer(subscription);
 
-    isSubscribed = true;
-    updateBtn();
-  })
-  .catch(function(err) {
-    console.log('Failed to subscribe the user: ', err);
-    updateBtn();
-  });
+      isSubscribed = true;
+      updateBtn();
+    })
+    .catch(function (err) {
+      console.log('Failed to subscribe the user: ', err);
+      updateBtn();
+    });
 }
 
 function updateSubscriptionOnServer(subscription) {
